@@ -1,0 +1,49 @@
+name: Build WORLD-EDUCATION 2.0 Offline APK
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'WE2-Offline-Android-APK-Project.zip'
+      - '.github/workflows/build-apk.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Extract Android project
+        run: unzip -q WE2-Offline-Android-APK-Project.zip
+
+      - name: Build debug APK
+        working-directory: WE2-Offline-Android
+        run: gradle assembleDebug --no-daemon
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: WORLD-EDUCATION-2.0-ELMANZY-IMPERIAL-OFFLINE-APK
+          path: WE2-Offline-Android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 30
