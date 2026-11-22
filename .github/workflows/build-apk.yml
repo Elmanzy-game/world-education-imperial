@@ -38,7 +38,9 @@ jobs:
           echo "ANDROID_SDK_ROOT=$SDK_ROOT" >> "$GITHUB_ENV"
           echo "$(dirname "$SDKMANAGER")" >> "$GITHUB_PATH"
           echo "Using SDK manager: $SDKMANAGER"
+          set +o pipefail
           yes | "$SDKMANAGER" --sdk_root="$SDK_ROOT" --licenses >/dev/null
+          set -o pipefail
           "$SDKMANAGER" --sdk_root="$SDK_ROOT" "platforms;android-35" "build-tools;35.0.0"
           test -d "$SDK_ROOT/platforms/android-35"
           test -d "$SDK_ROOT/build-tools/35.0.0"
