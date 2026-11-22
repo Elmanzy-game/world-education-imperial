@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'WE2-Offline-Android-APK-Project.zip'
+      - 'WORLD-EDUCATION-2.0-ELMANZY-IMPERIAL-APK-PROJECT.zip'
       - '.github/workflows/build-apk.yml'
 
 permissions:
@@ -35,7 +35,7 @@ jobs:
           gradle-version: '8.9'
 
       - name: Extract Android project
-        run: unzip -q WE2-Offline-Android-APK-Project.zip
+        run: unzip -q WORLD-EDUCATION-2.0-ELMANZY-IMPERIAL-APK-PROJECT.zip
 
       - name: Build debug APK
         working-directory: WE2-Offline-Android
